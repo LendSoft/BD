@@ -1,0 +1,16 @@
+.request-item{
+    border: 3px solid blueviolet;
+    border-radius: 7px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    animation: show-req 0.5s ease;
+}
+@keyframes show-req{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}

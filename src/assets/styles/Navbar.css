@@ -1,0 +1,16 @@
+.navbar{
+    background-color: blueviolet;
+    padding: 10px 55px;
+}
+.navbar-list{
+    display: flex;
+    justify-content: start;
+    gap: 30px
+}
+.navbar-list__item-link{
+    text-decoration: none;
+    color: white;
+}
+.active{
+    opacity: 0.7;
+}

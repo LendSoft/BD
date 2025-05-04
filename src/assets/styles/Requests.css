@@ -1,0 +1,11 @@
+.requests{
+    padding: 10px 55px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+.pagination{
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 55px;
+}

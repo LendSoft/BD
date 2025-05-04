@@ -1,0 +1,14 @@
+.statement{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: show 1s forwards;
+}
+@keyframes show{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}

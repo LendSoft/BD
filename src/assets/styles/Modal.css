@@ -1,0 +1,83 @@
+.modal{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content{
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 7px;
+}
+.modal-x{
+    margin: 3px 0px;
+    cursor: pointer;
+    text-align: right;
+    width: 100%;
+    font-size: 30px;
+}
+
+.show-modal{
+    animation: show-modal 0.5s forwards;
+    display: flex;
+}
+.hide-modal{
+    animation: hide-modal 0.5s forwards;
+    display: none;
+}
+.show-modal-content{
+    animation: show-modal-content 0.5s forwards;
+    display: block;
+}
+.hide-modal-content{
+    animation: hide-modal-content 0.5s forwards;
+    display: none;
+}
+@keyframes show-modal{
+    from{
+        display: none;
+        background-color: rgba(0, 0, 0, 0);
+    }
+    to{
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+@keyframes hide-modal{
+    from{
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    to{
+        display: none;
+        background-color: rgba(0, 0, 0, 0);
+    }
+}
+@keyframes show-modal-content{
+    from {
+        display: none;
+        opacity: 0;
+      }
+      to {
+        display: block;
+        opacity: 1;
+      }
+}
+@keyframes hide-modal-content {
+    from {
+      display: block;
+      opacity: 1;
+    }
+    to {
+      display: none;
+      opacity: 0;
+    }
+}
