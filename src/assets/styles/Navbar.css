@@ -1,16 +1,28 @@
-.navbar{
+.navbar {
     background-color: blueviolet;
     padding: 10px 55px;
-}
-.navbar-list{
+  }
+  
+  .navbar-list {
     display: flex;
     justify-content: start;
-    gap: 30px
-}
-.navbar-list__item-link{
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .navbar-list__item-link {
     text-decoration: none;
     color: white;
-}
-.active{
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+  
+  .navbar-list__item-link:hover {
     opacity: 0.7;
-}
+  }
+  
+  .active {
+    opacity: 0.7;
+  }

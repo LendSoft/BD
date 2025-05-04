@@ -1,17 +1,23 @@
-import React from 'react'
-import '../assets/styles/RequestItem.css'
-import ModalStore from '../modules/Modal/store/store'
-import RequestFormStore from '../modules/RequestForm/store/store'
+import React from 'react';
+import '../assets/styles/RequestItem.css';
+import ModalStore from '../modules/Modal/store/store';
+import RequestFormStore from '../modules/RequestForm/store/store';
+import AuthStore from '../stores/AuthStore';
 
-const RequestItem = ({request}) => {
+const RequestItem = ({ request }) => {
+  const handleClick = () => {
+    if (AuthStore.user?.role === 'admin') {
+      ModalStore.setShowModal(true);
+      ModalStore.setIsEditing(true);
+      RequestFormStore.setRequest(request);
+    }
+  };
+
   return (
-    <div 
-      className='request-item' 
-      onClick={() => {
-        ModalStore.setShowModal(true)
-        ModalStore.setIsEditing(true)
-        RequestFormStore.setRequest(request)
-      }}
+    <div
+      className="request-item"
+      onClick={handleClick}
+      style={AuthStore.user?.role === 'admin' ? { cursor: 'pointer' } : { cursor: 'default' }}
     >
       <h3>Адрес: {request.addres}</h3>
       <h3>Тип аварии: {request.typeAccident}</h3>
@@ -19,7 +25,7 @@ const RequestItem = ({request}) => {
       <h3>Заявитель: {request.applicant}</h3>
       <h3>Номер телефона заявителя: {request.numberPhone}</h3>
     </div>
-  )
-}
+  );
+};
 
-export default RequestItem
+export default RequestItem;
