@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
 import AuthStore from "../stores/AuthStore";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/Login.css";
 
-const Login = ({ isRegister = false }) => {
+const Login = observer(({ isRegister = false }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,14 +12,17 @@ const Login = ({ isRegister = false }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
     if (isRegister) {
-      if (AuthStore.register(username, password)) {
+      const success = await AuthStore.register(username, password);
+      if (success) {
         navigate("/login");
       } else {
         setError("Пользователь уже существует");
       }
     } else {
-      if (AuthStore.login(username, password)) {
+      const success = await AuthStore.login(username, password);
+      if (success) {
         navigate("/statement");
       } else {
         setError("Неверный логин или пароль");
@@ -54,6 +58,6 @@ const Login = ({ isRegister = false }) => {
       )}
     </div>
   );
-};
+});
 
 export default Login;
