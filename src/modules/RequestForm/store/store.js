@@ -1,12 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { prioritets } from "../../../guide/prioritets";
-import { typesAccidents } from "../../../guide/typesAccidents";
 
 class RequestFormStore {
   id = null;
   addres = "";
   coords = [];
-  typeAccident = typesAccidents[0];
+  typeAccident = "";
   prioritet = prioritets[0].name;
   applicant = "";
   numberPhone = "";
@@ -53,7 +52,7 @@ class RequestFormStore {
     this.id = null;
     this.addres = "";
     this.coords = [];
-    this.typeAccident = typesAccidents[0];
+    this.typeAccident = "";
     this.prioritet = prioritets[0].name;
     this.applicant = "";
     this.numberPhone = "";

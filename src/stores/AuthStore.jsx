@@ -1,5 +1,9 @@
-
 import { makeAutoObservable } from "mobx";
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'http://localhost:3001/api',
+});
 
 class AuthStore {
   user = null;
@@ -7,37 +11,69 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadFromStorage(); // Восстанавливаем состояние при инициализации
   }
 
-  login(username, password) {
-    if (username === "admin" && password === "admin") {
-      this.user = { username, role: "admin" };
-      this.isAuthenticated = true;
-      return true;
+  saveToStorage() {
+    try {
+      localStorage.setItem('auth', JSON.stringify({
+        user: this.user,
+        isAuthenticated: this.isAuthenticated,
+      }));
+      console.log('Состояние авторизации сохранено в localStorage');
+    } catch (err) {
+      console.error('Ошибка сохранения в localStorage:', err);
     }
-    // Simulated user login
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-    if (users[username] && users[username].password === password) {
-      this.user = { username, role: "user" };
-      this.isAuthenticated = true;
-      return true;
-    }
-    return false;
   }
 
-  register(username, password) {
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-    if (users[username]) {
+  loadFromStorage() {
+    try {
+      const authData = localStorage.getItem('auth');
+      if (authData) {
+        const { user, isAuthenticated } = JSON.parse(authData);
+        this.user = user;
+        this.isAuthenticated = isAuthenticated;
+        console.log('Состояние авторизации восстановлено из localStorage:', { user, isAuthenticated });
+      }
+    } catch (err) {
+      console.error('Ошибка загрузки из localStorage:', err);
+    }
+  }
+
+  async login(username, password) {
+    try {
+      console.log('Попытка авторизации:', { username });
+      const response = await api.post('/login', { username, password });
+      console.log('Ответ сервера при авторизации:', response.data);
+      this.user = response.data;
+      this.isAuthenticated = true;
+      this.saveToStorage();
+      return true;
+    } catch (err) {
+      const errorMessage = err.response?.data?.error || err.message;
+      console.error('Ошибка авторизации:', errorMessage);
       return false;
     }
-    users[username] = { password, role: "user" };
-    localStorage.setItem("users", JSON.stringify(users));
-    return true;
+  }
+
+  async register(username, password) {
+    try {
+      console.log('Попытка регистрации:', { username });
+      const response = await api.post('/register', { username, password });
+      console.log('Ответ сервера при регистрации:', response.data);
+      return true;
+    } catch (err) {
+      const errorMessage = err.response?.data?.error || err.message;
+      console.error('Ошибка регистрации:', errorMessage);
+      return false;
+    }
   }
 
   logout() {
     this.user = null;
     this.isAuthenticated = false;
+    localStorage.removeItem('auth');
+    console.log('Пользователь вышел из системы');
   }
 }
 

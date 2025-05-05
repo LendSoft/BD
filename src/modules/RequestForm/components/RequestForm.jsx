@@ -1,41 +1,81 @@
-import React, { useState } from "react";
-import { typesAccidents } from "../../../guide/typesAccidents";
-import { prioritets } from "../../../guide/prioritets";
+/* Modified src/modules/RequestForm/components/RequestForm.jsx */
+import React, { useState, useEffect } from "react";
 import "../../../assets/styles/RequestForm.css";
 import { observer } from "mobx-react-lite";
 import RequestFormStore from "../store/store";
-import RequestsStore from "../../Requests/store/store";
 import ModalStore from "../../Modal/store/store";
 import AuthStore from "../../../stores/AuthStore";
 import Button from "../../../UI/Button";
 import MapComponent from "../../../components/MapComponent";
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'http://localhost:3001/api',
+});
 
 const RequestForm = observer(() => {
-  const services = ["Полиция", "МЧС", "Больница"];
+  const services = ["Полиция", "МЧС", "Больница", "Пожарные", "Соцслужба", "ЖКХ"];
   const [selectedService, setSelectedService] = useState("");
+  const [accidentTypes, setAccidentTypes] = useState([]);
+  const [priorities, setPriorities] = useState([]);
 
-  const saveRequest = () => {
-    const updatedRequest = JSON.parse(JSON.stringify(RequestFormStore));
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const typesResponse = await api.get('/accident_types');
+        const prioritiesResponse = await api.get('/priorities');
+        setAccidentTypes(typesResponse.data);
+        setPriorities(prioritiesResponse.data);
+      } catch (err) {
+        console.error('Ошибка загрузки данных:', err);
+        alert('Ошибка при загрузке данных');
+      }
+    };
+    fetchData();
+  }, []);
 
-    if (ModalStore.isEditing) {
-      RequestsStore.updateRequest(updatedRequest);
-    } else {
-      RequestsStore.addRequest(updatedRequest);
-    }
+  const saveRequest = async () => {
+    const requestData = {
+      user_id: AuthStore.user.id,
+      address: RequestFormStore.addres,
+      latitude: RequestFormStore.coords[0] || 0,
+      longitude: RequestFormStore.coords[1] || 0,
+      accident_type: RequestFormStore.typeAccident,
+      priority: RequestFormStore.prioritet,
+      applicant: RequestFormStore.applicant,
+      phone_number: RequestFormStore.numberPhone,
+    };
 
-    ModalStore.setIsEditing(false);
-    ModalStore.setShowModal(false);
-    RequestFormStore.setEmptyForm();
-  };
-
-  const routeRequest = () => {
-    if (selectedService) {
-      const request = JSON.parse(JSON.stringify(RequestFormStore));
-      RequestsStore.routeRequest(request, selectedService);
+    try {
+      if (ModalStore.isEditing) {
+        await api.put(`/requests/${RequestFormStore.id}`, requestData);
+      } else {
+        await api.post('/requests', requestData);
+      }
       ModalStore.setIsEditing(false);
       ModalStore.setShowModal(false);
       RequestFormStore.setEmptyForm();
-      setSelectedService("");
+    } catch (err) {
+      console.error('Ошибка сохранения заявки:', err);
+      alert('Ошибка при сохранении заявки');
+    }
+  };
+
+  const routeRequest = async () => {
+    if (selectedService) {
+      try {
+        await api.post('/routed_requests', {
+          request_id: RequestFormStore.id,
+          service_name: selectedService,
+        });
+        ModalStore.setIsEditing(false);
+        ModalStore.setShowModal(false);
+        RequestFormStore.setEmptyForm();
+        setSelectedService("");
+      } catch (err) {
+        console.error('Ошибка перенаправления заявки:', err);
+        alert('Ошибка при перенаправлении заявки');
+      }
     }
   };
 
@@ -59,7 +99,7 @@ const RequestForm = observer(() => {
         onChange={(e) => RequestFormStore.setTypeAccident(e.target.value)}
         value={RequestFormStore.typeAccident}
       >
-        {typesAccidents.map((accident) => (
+        {accidentTypes.map((accident) => (
           <option value={accident} key={accident}>
             {accident}
           </option>
@@ -69,7 +109,7 @@ const RequestForm = observer(() => {
         onChange={(e) => RequestFormStore.setPrioritet(e.target.value)}
         value={RequestFormStore.prioritet}
       >
-        {prioritets.map((prioritet) => (
+        {priorities.map((prioritet) => (
           <option value={prioritet.name} key={prioritet.number}>
             {prioritet.number} - {prioritet.name}
           </option>
@@ -117,11 +157,16 @@ const RequestForm = observer(() => {
             Перенаправить заявку
           </Button>
           <Button
-            onClick={() => {
-              RequestsStore.removeRequest(RequestFormStore);
-              ModalStore.setIsEditing(false);
-              ModalStore.setShowModal(false);
-              RequestFormStore.setEmptyForm();
+            onClick={async () => {
+              try {
+                await api.delete(`/requests/${RequestFormStore.id}`);
+                ModalStore.setIsEditing(false);
+                ModalStore.setShowModal(false);
+                RequestFormStore.setEmptyForm();
+              } catch (err) {
+                console.error('Ошибка удаления заявки:', err);
+                alert('Ошибка при удалении заявки');
+              }
             }}
             style={{ backgroundColor: "red", marginTop: "10px" }}
           >
