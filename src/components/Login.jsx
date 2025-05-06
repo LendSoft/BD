@@ -12,7 +12,7 @@ const Login = observer(({ isRegister = false }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
     if (isRegister) {
       const success = await AuthStore.register(username, password);
       if (success) {

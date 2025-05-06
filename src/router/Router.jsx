@@ -12,7 +12,6 @@ const Router = observer(() => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Проверяем состояние авторизации
     AuthStore.loadFromStorage();
     console.log('Router useEffect:', { isAuthenticated: AuthStore.isAuthenticated, user: AuthStore.user });
     setLoading(false);

@@ -11,6 +11,7 @@ import { Style, Icon } from "ol/style";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import markerIcon from "../assets/marker.png";
+import "../assets/styles/MapPage.css";
 
 const MapComponent = () => {
   const mapRef = useRef();
@@ -30,7 +31,7 @@ const MapComponent = () => {
       ],
       target: mapRef.current,
       view: new View({
-        center: fromLonLat([50.1002, 53.1959]), // Самара
+        center: fromLonLat([50.1002, 53.1959]),
         zoom: 12,
       }),
     });
@@ -61,7 +62,7 @@ const MapComponent = () => {
   }, []);
 
   return (
-    <div ref={mapRef} style={{ width: 400, height: 250 }}></div>
+    <div ref={mapRef} className="map" style={{ width: '600px', height: '400px' }}></div>
   );
 };
 

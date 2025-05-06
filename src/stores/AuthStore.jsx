@@ -11,7 +11,7 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.loadFromStorage(); // Загружаем состояние сразу при создании
+    this.loadFromStorage();
   }
 
   saveToStorage() {

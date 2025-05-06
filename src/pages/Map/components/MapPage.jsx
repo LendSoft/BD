@@ -50,7 +50,7 @@ const MapPage = () => {
       ],
       target: mapRef.current,
       view: new View({
-        center: fromLonLat([50.1002, 53.1959]), // Самара
+        center: fromLonLat([50.1002, 53.1959]),
         zoom: 12,
       }),
     });
@@ -118,7 +118,7 @@ const MapPage = () => {
 
   return (
     <div>
-      <div ref={mapRef} style={{ width: '95%', height: '555px', margin: "15px auto" }} />
+      <div ref={mapRef} className="map" style={{ width: '95%', height: '700px', margin: "15px auto" }} />
       <div ref={popupRef} style={{
         width: 300,
         position: 'absolute',

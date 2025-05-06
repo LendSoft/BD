@@ -52,7 +52,7 @@ class RequestFormStore {
     this.addres = "";
     this.coords = [];
     this.incident = "";
-    this.prioritet = ""; // Исправлено: сбрасываем в пустую строку
+    this.prioritet = "";
     this.applicant = "";
     this.numberPhone = "";
   }
