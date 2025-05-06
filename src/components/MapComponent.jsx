@@ -3,14 +3,14 @@ import Map from "ol/Map.js";
 import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
-import { fromLonLat } from "ol/proj";
+import { fromLonLat, toLonLat } from "ol/proj";
 import RequestFormStore from "../modules/RequestForm/store/store";
 import { Feature } from "ol";
 import { Point } from "ol/geom";
 import { Style, Icon } from "ol/style";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
-import markerIcon from "../assets/marker.png"
+import markerIcon from "../assets/marker.png";
 
 const MapComponent = () => {
   const mapRef = useRef();
@@ -30,15 +30,15 @@ const MapComponent = () => {
       ],
       target: mapRef.current,
       view: new View({
-        center: fromLonLat([39.70732721786235, 47.23260132167479]),
+        center: fromLonLat([50.1002, 53.1959]), // Самара
         zoom: 12,
       }),
     });
 
     map.on("click", (event) => {
       const coordinates = event.coordinate;
-
-      RequestFormStore.setCoords(coordinates)
+      const [longitude, latitude] = toLonLat(coordinates);
+      RequestFormStore.setCoords([latitude, longitude]);
 
       const marker = new Feature({
         geometry: new Point(coordinates),
@@ -61,10 +61,8 @@ const MapComponent = () => {
   }, []);
 
   return (
-    <div ref={mapRef} style={{ width: 400, height: 250 }}>
-
-    </div>
-  )
+    <div ref={mapRef} style={{ width: 400, height: 250 }}></div>
+  );
 };
 
 export default MapComponent;

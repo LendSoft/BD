@@ -1,6 +1,20 @@
 .map{
     animation: show 1s forwards;
+    width: 100% !important;
+    height: 700px !important; /* Увеличена высота */
 }
+
+.map-container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .map {
+        height: 500px !important;
+    }
+}
+
 @keyframes show{
     from{
         opacity: 0;

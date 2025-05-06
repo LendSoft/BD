@@ -1,11 +1,26 @@
-.requests{
+.requests {
     padding: 10px 55px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
-.pagination{
+
+.requests h3 {
+    text-align: center;
+    width: 100%;
+    grid-column: span 3;
+}
+
+.pagination {
     display: flex;
-    justify-content: flex-start;
-    padding-left: 55px;
+    justify-content: center;
+    padding-left: 0;
+    margin: 20px 0;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    font-size: 16px;
+    margin: 0 5px;
+    border-radius: 3px;
 }

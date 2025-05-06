@@ -1,4 +1,3 @@
-
 import React from 'react';
 import '../assets/styles/RequestItem.css';
 import ModalStore from '../modules/Modal/store/store';
@@ -14,7 +13,7 @@ const RequestItem = ({ request }) => {
         id: request.id,
         addres: request.addres,
         coords: request.coords,
-        typeAccident: request.type_accident,
+        incident: request.incident,
         prioritet: request.prioritet,
         applicant: request.applicant,
         numberPhone: request.phone_number,
@@ -29,7 +28,7 @@ const RequestItem = ({ request }) => {
       style={AuthStore.user?.role === 'admin' ? { cursor: 'pointer' } : { cursor: 'default' }}
     >
       <h3>Адрес: {request.addres}</h3>
-      <h3>Тип аварии: {request.type_accident}</h3>
+      <h3>Происшествие: {request.incident}</h3>
       <h3>Приоритет: {request.prioritet}</h3>
       <h3>Заявитель: {request.applicant}</h3>
       <h3>Номер телефона заявителя: {request.phone_number}</h3>

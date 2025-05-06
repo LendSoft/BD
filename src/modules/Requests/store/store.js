@@ -3,10 +3,13 @@ import { nanoid } from "nanoid";
 
 class RequestsStore {
   requests = [];
-  routedRequests = [];
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setRequests(newRequests) {
+    this.requests = newRequests;
   }
 
   addRequest(newRequest) {
@@ -22,15 +25,6 @@ class RequestsStore {
     this.requests = this.requests.map((req) => {
       if (req.id === request.id) return request;
       return req;
-    });
-  }
-
-  routeRequest(request, service) {
-    this.removeRequest(request);
-    this.routedRequests.push({
-      ...request,
-      service,
-      routedAt: new Date().toISOString(),
     });
   }
 }

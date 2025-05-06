@@ -1,12 +1,11 @@
 import { makeAutoObservable } from "mobx";
-import { prioritets } from "../../../guide/prioritets";
 
 class RequestFormStore {
   id = null;
   addres = "";
   coords = [];
-  typeAccident = "";
-  prioritet = prioritets[0].name;
+  incident = "";
+  prioritet = "";
   applicant = "";
   numberPhone = "";
 
@@ -22,8 +21,8 @@ class RequestFormStore {
     this.coords = newCoords;
   }
 
-  setTypeAccident(newTypeAccident) {
-    this.typeAccident = newTypeAccident;
+  setIncident(newIncident) {
+    this.incident = newIncident;
   }
 
   setPrioritet(newPrioritet) {
@@ -42,7 +41,7 @@ class RequestFormStore {
     this.id = newRequest.id;
     this.addres = newRequest.addres;
     this.coords = newRequest.coords;
-    this.typeAccident = newRequest.typeAccident;
+    this.incident = newRequest.incident;
     this.prioritet = newRequest.prioritet;
     this.applicant = newRequest.applicant;
     this.numberPhone = newRequest.numberPhone;
@@ -52,8 +51,8 @@ class RequestFormStore {
     this.id = null;
     this.addres = "";
     this.coords = [];
-    this.typeAccident = "";
-    this.prioritet = prioritets[0].name;
+    this.incident = "";
+    this.prioritet = ""; // Исправлено: сбрасываем в пустую строку
     this.applicant = "";
     this.numberPhone = "";
   }

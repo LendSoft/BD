@@ -1,44 +1,30 @@
 .logs {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  .logs h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-  
-  .logs-list {
-    display: grid;
-    gap: 12px;
-    margin-top: 20px;
-  }
-  
-  .log-item {
-    border: 2px solid blueviolet;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  .log-item p {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-  }
-  
-  .pagination button {
-    padding: 6px 12px;
-    font-size: 14px;
-    margin: 0 3px;
-    border-radius: 3px;
-  }
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logs h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.logs-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.log-item {
+  border: 2px solid blueviolet;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.log-item p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.4;
+}

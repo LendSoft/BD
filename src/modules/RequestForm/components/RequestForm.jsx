@@ -1,4 +1,3 @@
-/* Modified src/modules/RequestForm/components/RequestForm.jsx */
 import React, { useState, useEffect } from "react";
 import "../../../assets/styles/RequestForm.css";
 import { observer } from "mobx-react-lite";
@@ -8,13 +7,14 @@ import AuthStore from "../../../stores/AuthStore";
 import Button from "../../../UI/Button";
 import MapComponent from "../../../components/MapComponent";
 import axios from 'axios';
+import RequestsStore from "../../Requests/store/store";
 
 const api = axios.create({
   baseURL: 'http://localhost:3001/api',
 });
 
 const RequestForm = observer(() => {
-  const services = ["Полиция", "МЧС", "Больница", "Пожарные", "Соцслужба", "ЖКХ"];
+  const services = ["Полиция", "МЧС", "Больница", "Пожарные", "Соцслужба", "ЖКХ", "Другое"];
   const [selectedService, setSelectedService] = useState("");
   const [accidentTypes, setAccidentTypes] = useState([]);
   const [priorities, setPriorities] = useState([]);
@@ -40,7 +40,7 @@ const RequestForm = observer(() => {
       address: RequestFormStore.addres,
       latitude: RequestFormStore.coords[0] || 0,
       longitude: RequestFormStore.coords[1] || 0,
-      accident_type: RequestFormStore.typeAccident,
+      accident_type: RequestFormStore.incident,
       priority: RequestFormStore.prioritet,
       applicant: RequestFormStore.applicant,
       phone_number: RequestFormStore.numberPhone,
@@ -55,6 +55,8 @@ const RequestForm = observer(() => {
       ModalStore.setIsEditing(false);
       ModalStore.setShowModal(false);
       RequestFormStore.setEmptyForm();
+      const response = await api.get('/requests');
+      RequestsStore.setRequests(response.data);
     } catch (err) {
       console.error('Ошибка сохранения заявки:', err);
       alert('Ошибка при сохранении заявки');
@@ -67,11 +69,18 @@ const RequestForm = observer(() => {
         await api.post('/routed_requests', {
           request_id: RequestFormStore.id,
           service_name: selectedService,
+          applicant: RequestFormStore.applicant,
+          phone_number: RequestFormStore.numberPhone,
+          address: RequestFormStore.addres,
+          accident_type: RequestFormStore.incident,
+          priority: RequestFormStore.prioritet,
         });
         ModalStore.setIsEditing(false);
         ModalStore.setShowModal(false);
         RequestFormStore.setEmptyForm();
         setSelectedService("");
+        const response = await api.get('/requests');
+        RequestsStore.setRequests(response.data);
       } catch (err) {
         console.error('Ошибка перенаправления заявки:', err);
         alert('Ошибка при перенаправлении заявки');
@@ -83,7 +92,9 @@ const RequestForm = observer(() => {
     RequestFormStore.addres &&
     RequestFormStore.applicant &&
     RequestFormStore.numberPhone &&
-    RequestFormStore.coords.length
+    RequestFormStore.coords.length &&
+    RequestFormStore.incident &&
+    RequestFormStore.prioritet
   );
 
   return (
@@ -96,9 +107,10 @@ const RequestForm = observer(() => {
       />
       <MapComponent />
       <select
-        onChange={(e) => RequestFormStore.setTypeAccident(e.target.value)}
-        value={RequestFormStore.typeAccident}
+        onChange={(e) => RequestFormStore.setIncident(e.target.value)}
+        value={RequestFormStore.incident}
       >
+        <option value="">Выберите происшествие</option>
         {accidentTypes.map((accident) => (
           <option value={accident} key={accident}>
             {accident}
@@ -109,6 +121,7 @@ const RequestForm = observer(() => {
         onChange={(e) => RequestFormStore.setPrioritet(e.target.value)}
         value={RequestFormStore.prioritet}
       >
+        <option value="">Выберите приоритет</option>
         {priorities.map((prioritet) => (
           <option value={prioritet.name} key={prioritet.number}>
             {prioritet.number} - {prioritet.name}
@@ -163,6 +176,8 @@ const RequestForm = observer(() => {
                 ModalStore.setIsEditing(false);
                 ModalStore.setShowModal(false);
                 RequestFormStore.setEmptyForm();
+                const response = await api.get('/requests');
+                RequestsStore.setRequests(response.data);
               } catch (err) {
                 console.error('Ошибка удаления заявки:', err);
                 alert('Ошибка при удалении заявки');

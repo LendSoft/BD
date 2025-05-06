@@ -11,7 +11,7 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.loadFromStorage(); // Восстанавливаем состояние при инициализации
+    this.loadFromStorage(); // Загружаем состояние сразу при создании
   }
 
   saveToStorage() {
@@ -20,9 +20,12 @@ class AuthStore {
         user: this.user,
         isAuthenticated: this.isAuthenticated,
       }));
-      console.log('Состояние авторизации сохранено в localStorage');
+      console.log('Состояние авторизации сохранено в localStorage:', {
+        user: this.user,
+        isAuthenticated: this.isAuthenticated,
+      });
     } catch (err) {
-      console.error('Ошибка сохранения в localStorage:', err);
+      console.error('Ошибка сохранения в localStorage:', err.message);
     }
   }
 
@@ -31,12 +34,25 @@ class AuthStore {
       const authData = localStorage.getItem('auth');
       if (authData) {
         const { user, isAuthenticated } = JSON.parse(authData);
-        this.user = user;
-        this.isAuthenticated = isAuthenticated;
-        console.log('Состояние авторизации восстановлено из localStorage:', { user, isAuthenticated });
+        if (user && isAuthenticated) {
+          this.user = user;
+          this.isAuthenticated = isAuthenticated;
+          console.log('Состояние авторизации восстановлено из localStorage:', {
+            user,
+            isAuthenticated,
+          });
+        } else {
+          console.log('Данные в localStorage некорректны:', authData);
+          this.user = null;
+          this.isAuthenticated = false;
+        }
+      } else {
+        console.log('Данные авторизации в localStorage отсутствуют');
       }
     } catch (err) {
-      console.error('Ошибка загрузки из localStorage:', err);
+      console.error('Ошибка загрузки из localStorage:', err.message);
+      this.user = null;
+      this.isAuthenticated = false;
     }
   }
 

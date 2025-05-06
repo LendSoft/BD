@@ -1,0 +1,33 @@
+.contacts {
+  max-width: 700px; /* Уменьшено с 800px */
+  margin: 20px auto;
+  padding: 15px; /* Уменьшено с 20px */
+  border: 3px solid blueviolet;
+  border-radius: 5px;
+}
+
+.contacts h2 {
+  text-align: center;
+  margin-bottom: 15px; /* Уменьшено с 20px */
+}
+
+.contacts p {
+  margin-bottom: 15px; /* Уменьшено с 20px */
+}
+
+.contacts table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.contacts th, .contacts td {
+  border: 1px solid blueviolet;
+  padding: 10px; /* Уменьшено с 10px */
+  text-align: left;
+  font-size: 16px; /* Уменьшено с неявного 16px */
+}
+
+.contacts th {
+  background-color: blueviolet;
+  color: white;
+}

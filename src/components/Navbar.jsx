@@ -26,6 +26,11 @@ const Navbar = () => {
                 Карта
               </NavLink>
             </li>
+            <li className="navbar-list__item">
+              <NavLink className="navbar-list__item-link" to="/contacts">
+                Контакты
+              </NavLink>
+            </li>
             {AuthStore.user?.role === "admin" && (
               <li className="navbar-list__item">
                 <NavLink className="navbar-list__item-link" to="/logs">
@@ -35,11 +40,11 @@ const Navbar = () => {
             )}
             <li className="navbar-list__item">
               <NavLink
-                className="navbar-list__item-link"
+                className="navbar-list__item-link navbar-list__item-logout"
                 to="/login"
                 onClick={handleLogout}
               >
-                Выйти
+                <img src="/logout.png" alt="Выйти" className="logout-icon" />
               </NavLink>
             </li>
           </>
