@@ -72,15 +72,27 @@ class AuthStore {
     }
   }
 
-  async register(username, password) {
+  async register(username, password, first_name, last_name, phone_number) {
     try {
       console.log('Попытка регистрации:', { username });
-      const response = await api.post('/register', { username, password });
+      const response = await api.post('/register', { username, password, first_name, last_name, phone_number });
       console.log('Ответ сервера при регистрации:', response.data);
       return true;
     } catch (err) {
       const errorMessage = err.response?.data?.error || err.message;
       console.error('Ошибка регистрации:', errorMessage);
+      return false;
+    }
+  }
+
+  async updateProfile(id, profileData) {
+    try {
+      const response = await api.put(`/profile/${id}`, profileData);
+      this.user = { ...this.user, ...response.data };
+      this.saveToStorage();
+      return true;
+    } catch (err) {
+      console.error('Ошибка обновления профиля:', err.message);
       return false;
     }
   }

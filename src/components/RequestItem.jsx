@@ -1,10 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../assets/styles/RequestItem.css';
 import ModalStore from '../modules/Modal/store/store';
 import RequestFormStore from '../modules/RequestForm/store/store';
 import AuthStore from '../stores/AuthStore';
 
 const RequestItem = ({ request }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
     if (AuthStore.user?.role === 'admin') {
       ModalStore.setShowModal(true);
@@ -32,6 +35,18 @@ const RequestItem = ({ request }) => {
       <h3>Приоритет: {request.prioritet}</h3>
       <h3>Заявитель: {request.applicant}</h3>
       <h3>Номер телефона заявителя: {request.phone_number}</h3>
+      <h3>
+        Создатель:{' '}
+        <span
+          style={{ color: 'blue', cursor: 'pointer' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/profile/${request.creator.id}`);
+          }}
+        >
+          {request.creator.full_name}
+        </span>
+      </h3>
     </div>
   );
 };

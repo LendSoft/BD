@@ -31,6 +31,11 @@ const Navbar = () => {
                 Контакты
               </NavLink>
             </li>
+            <li className="navbar-list__item">
+              <NavLink className="navbar-list__item-link" to={`/profile/${AuthStore.user?.id}`}>
+                Профиль
+              </NavLink>
+            </li>
             {AuthStore.user?.role === "admin" && (
               <li className="navbar-list__item">
                 <NavLink className="navbar-list__item-link" to="/logs">
